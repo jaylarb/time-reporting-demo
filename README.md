@@ -18,7 +18,7 @@ This solution is a small .NET console app that demonstrates a simple reporting p
   - Reports/ - Report implementations and runner
     - IReport.cs - Marker interface used for auto-registration of reports
     - ReportBase.cs - Base class that encapsulates building and rendering reports
-    - ReportRunner.cs - Finds all registered IReport instances and writes output to console
+    - ReportRunner.cs - Finds all registered IReport instances and presents an interactive menu so the user can choose a report to run (or run all)
     - Several report implementations (EmployeeBillingReport, CompanyBillingReport, MonthlyRevenueTrendReport, RawEmployeeReport, RawInvoiceReport)
   - Models/ - POCOs used to map query results
 
@@ -34,6 +34,13 @@ This solution is a small .NET console app that demonstrates a simple reporting p
 
 - Seed data
   - DatabaseInitializer creates `Employees` and `Invoices` tables and seeds them on first run. Employee names are from a fixed list; salaries and invoices are randomly generated within ranges.
+
+- Interactive mode
+  - The app presents an interactive console menu after initialization. The menu shows a numbered list of available reports and accepts input:
+    - Enter 0 to run all reports
+    - Enter 1..N to run a single report by number
+    - Enter `q` to quit the application
+  - This behavior is implemented in Program.cs and ReportRunner.cs; ReportRunner exposes report names and a method to run a specific report by index.
 
 ## Build and run
 
