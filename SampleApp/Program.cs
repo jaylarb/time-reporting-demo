@@ -23,7 +23,51 @@ internal class Program
 
         var runner = provider.GetRequiredService<ReportRunner>();
 
-        runner.RunAll();
+        // Interactive selection loop: list reports and allow the user to choose one to run
+        while (true)
+        {
+            Console.WriteLine("Available reports:");
+            Console.WriteLine("0) Run all reports");
+
+            for (int i = 0; i < runner.ReportCount; i++)
+            {
+                Console.WriteLine($"{i + 1}) {runner.ReportNames[i]}");
+            }
+
+            Console.WriteLine("q) Quit");
+            Console.Write("Select a report to run: ");
+
+            var input = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                Console.WriteLine();
+                continue;
+            }
+
+            input = input.Trim();
+            if (input.Equals("q", StringComparison.OrdinalIgnoreCase))
+                break;
+
+            if (int.TryParse(input, out var choice))
+            {
+                if (choice == 0)
+                {
+                    runner.RunAll();
+                    continue;
+                }
+
+                var index = choice - 1;
+                if (!runner.RunByIndex(index))
+                {
+                    Console.WriteLine("Invalid selection.");
+                }
+
+                continue;
+            }
+
+            Console.WriteLine("Invalid input.");
+            Console.WriteLine();
+        }
     }
 
     private static IServiceCollection ConfigureServices()
